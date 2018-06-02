@@ -32,6 +32,12 @@ git remote rm heroku
 git remote add heroku git@heroku.com:<changed name>.git
 ```
 
+- Could not read from remote repository.
+```
+heroku keys:clear
+heroku keys:add
+```
+
 ### Prerequisites
 
 - Install npm version `v3.10.10`
