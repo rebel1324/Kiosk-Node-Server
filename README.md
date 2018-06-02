@@ -14,6 +14,18 @@ git clone https://github.com/Kiosk-project/Kiosk-Node-Server.git
 heroku local web
 ```
 
+- How to scale up / down heroku dyno
+
+```
+heroku ps:scale web=<number of container>
+```
+
+- Export env var
+
+```
+heroku config:get <VAR NAME> -s >> .env
+```
+
 ### Prerequisites
 
 - Install npm version `v3.10.10`
