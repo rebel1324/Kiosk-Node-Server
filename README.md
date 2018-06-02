@@ -26,6 +26,12 @@ heroku ps:scale web=<number of container>
 heroku config:get <VAR NAME> -s >> .env
 ```
 
+- After change heroku hostname
+```
+git remote rm heroku
+git remote add heroku git@heroku.com:<changed name>.git
+```
+
 ### Prerequisites
 
 - Install npm version `v3.10.10`
