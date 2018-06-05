@@ -12,6 +12,11 @@ app.use(express.static(path.join(__dirname, 'public')))
         res.render('pages/index')
     })
 
+app.post('/notification/to/:machineID', function (request, response) {
+    machineID = request.params.machineID
+    response.send("hello, " + machineID)
+})
+
 app.listen(PORT, function() {
     console.log('Listening on ', PORT)
 })
