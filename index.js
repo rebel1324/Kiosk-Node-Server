@@ -47,9 +47,23 @@ app.post('/notification/to/:machineID', function (request, response) {
         }
     }
 
-    webpush.sendNotification(pushSubscriptionData, pushNotiInfo["text"])
+    responseMessage = {}
+    responseCode = 200
 
-    response.send("hello, " + machineID)
+    try {
+        webpush.sendNotification(pushSubscriptionData, pushNotiInfo["text"])
+        responseMessage["msg"] = "push sended to id: " + machineID
+        indexLogger.info('push msg successfully sent to id: ' + machineID)
+    }
+    catch (except) {
+        responseMessage["msg"] = "push crashed id: " + machineID
+        responseMessage["except"] = except
+        responseCode = 500
+        return
+    }
+
+    response.setHeader('Content-Type', 'application/json');
+    response.status(responseCode).send(JSON.stringify(responseMessage))
 })
 
 app.listen(PORT, function() {
