@@ -7,8 +7,23 @@ const indexLogger = new Logger({
     level: 'debug',
     color: true
 })
+var bodyParser = require('body-parser')
+const webpush = require('web-push');
+
+const serverKey = {
+    publicKey: process.env.PUSH_SERVER_PUBLIC_KEY,
+    privateKey: process.env.PUSH_SERVER_PRIVATE_KEY
+}
+
+webpush.setVapidDetails(
+    'mailto:stories282@gmail.com',
+    serverKey["publicKey"],
+    serverKey["privateKey"]
+);
 
 app = express()
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 app.use(sslRedirect())
 app.use(express.static(path.join(__dirname, 'public')))
     .set('views', path.join(__dirname, 'views'))
@@ -20,6 +35,20 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.post('/notification/to/:machineID', function (request, response) {
     machineID = request.params.machineID
     indexLogger.info('machine id: ' + machineID + ' just entered')
+
+    pushNotiInfo = request.body
+    indexLogger.debug('push noti client info: ' + JSON.stringify(pushNotiInfo))
+
+    pushSubscriptionData = {
+        "endpoint": pushNotiInfo["endpoint"],
+        "keys": {
+            "auth": pushNotiInfo["auth"],
+            "p256dh": pushNotiInfo["p256dh"]
+        }
+    }
+
+    webpush.sendNotification(pushSubscriptionData, pushNotiInfo["text"])
+
     response.send("hello, " + machineID)
 })
 
