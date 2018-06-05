@@ -8,6 +8,10 @@ app.use(sslRedirect())
 app.use(express.static(path.join(__dirname, 'public')))
     .set('views', path.join(__dirname, 'views'))
     .set('view engine', 'ejs')
-    .get('/', (req, res) => res.render('pages/index'))
+    .get('/', function(req, res) {
+        res.render('pages/index')
+    })
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+app.listen(PORT, function() {
+    console.log('Listening on ', PORT)
+})
